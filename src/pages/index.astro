@@ -1,44 +1,55 @@
 ---
-import MainLayout from '../layouts/MainLayout.astro';
-import CurrencyDashboard from '../components/CurrencySwitcher/CurrencyDashboard';
-import YearlySummaryTable from '../components/YearlySummaryTable';
-import IncomeExpenseChart from '../components/IncomeExpenseChart';
-import type { Currency } from '../utils/currencyUtils';
+import MainLayout from "../layouts/MainLayout.astro";
+import CurrencyDashboard from "../components/CurrencySwitcher/CurrencyDashboard";
+import YearlySummaryTable from "../components/YearlySummaryTable";
+import IncomeExpenseChart from "../components/IncomeExpenseChart";
+import type {Currency} from "../utils/currencyUtils";
 
-let currency: Currency = 'RON';
-if (Astro.cookies.has('currency')) {
-	const stored = Astro.cookies.get('currency')?.value;
-	if (stored === 'RON' || stored === 'EUR' || stored === 'USD') currency = stored as Currency;
+let currency: Currency = "RON";
+if (Astro.cookies.has("currency")) {
+	const stored = Astro.cookies.get("currency")?.value;
+	if (stored === "RON" || stored === "EUR" || stored === "USD")
+		currency = stored as Currency;
 }
 
 const yearlyData = {
-  income: {
-    Salary: [200, 300, 500, 400, 350, 600, 700, 800, 900, 1000, 1100, 1200],
-    Other: [100, 50, 70, 60, 80, 90, 100, 110, 120, 130, 140, 150]
-  },
-  expenses: {
-    Invoices: [150, 180, 200, 170, 160, 190, 200, 210, 220, 230, 240, 250],
-    Transportation: [80, 60, 75, 70, 65, 90, 85, 80, 75, 70, 65, 60]
-  }
+	income: {
+		Salary: [200, 300, 500, 400, 350, 600, 700, 800, 900, 1000, 1100, 1200],
+		Other: [100, 50, 70, 60, 80, 90, 100, 110, 120, 130, 140, 150],
+	},
+	expenses: {
+		Invoices: [150, 180, 200, 170, 160, 190, 200, 210, 220, 230, 240, 250],
+		Transportation: [80, 60, 75, 70, 65, 90, 85, 80, 75, 70, 65, 60],
+	},
 };
 
 const months = 12;
-const incomeTotals = Array.from({ length: months }, (_, i) =>
-  (yearlyData.income.Salary[i] || 0) + (yearlyData.income.Other[i] || 0)
+const incomeTotals = Array.from(
+	{length: months},
+	(_, i) =>
+		(yearlyData.income.Salary[i] || 0) + (yearlyData.income.Other[i] || 0),
 );
-const expenseTotals = Array.from({ length: months }, (_, i) =>
-  (yearlyData.expenses.Invoices[i] || 0) + (yearlyData.expenses.Transportation[i] || 0)
+const expenseTotals = Array.from(
+	{length: months},
+	(_, i) =>
+		(yearlyData.expenses.Invoices[i] || 0) +
+		(yearlyData.expenses.Transportation[i] || 0),
 );
-const savings = Array.from({ length: months }, (_, i) =>
-  incomeTotals[i] - expenseTotals[i]
+const savings = Array.from(
+	{length: months},
+	(_, i) => incomeTotals[i] - expenseTotals[i],
 );
 ---
 
 <MainLayout>
 	<CurrencyDashboard client:only="react" initialCurrency={currency} />
 	<div class="py-8">
-		<YearlySummaryTable client:only="react" data={yearlyData} />
-		<IncomeExpenseChart client:only="react" income={incomeTotals} expenses={expenseTotals} savings={savings} />
+		<YearlySummaryTable client:only="react" />
+		<IncomeExpenseChart
+			client:only="react"
+			income={incomeTotals}
+			expenses={expenseTotals}
+			savings={savings}
+		/>
 	</div>
 </MainLayout>
-

@@ -1,17 +1,18 @@
 ---
-import ResponsiveNav from '../components/ResponsiveNav/ResponsiveNav';
-import '../styles/tailwind.css';
+import ResponsiveNav from "../components/ResponsiveNav/ResponsiveNav";
+import "../styles/tailwind.css";
 ---
+
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Finance Tracker</title>
-  </head>
-  <body class="bg-gray-50 dark:bg-gray-950 min-h-screen font-sans">
-    <ResponsiveNav client:only="react" />
-    <main class="size-full mx-auto p-4">
-      <slot />
-    </main>
-  </body>
-</html> 
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Finance Tracker</title>
+	</head>
+	<body class="bg-gray-50 dark:bg-gray-950 min-h-screen font-sans">
+		<ResponsiveNav client:only="react" />
+		<main class="size-full mx-auto p-4">
+			<slot />
+		</main>
+	</body>
+</html>
