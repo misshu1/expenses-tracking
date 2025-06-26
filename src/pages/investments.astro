@@ -1,0 +1,8 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import InvestmentsManager from '../components/InvestmentsManager/InvestmentsManager';
+---
+<MainLayout>
+  <h2 class="text-xl font-semibold mb-4">Investments</h2>
+  <InvestmentsManager client:only="react" />
+</MainLayout> 

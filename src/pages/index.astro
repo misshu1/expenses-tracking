@@ -1,16 +1,15 @@
 ---
+import MainLayout from '../layouts/MainLayout.astro';
+import CurrencyDashboard from '../components/CurrencySwitcher/CurrencyDashboard';
+import type { Currency } from '../utils/currencyUtils';
 
+let currency: Currency = 'RON';
+if (Astro.cookies.has('currency')) {
+	const stored = Astro.cookies.get('currency')?.value;
+	if (stored === 'RON' || stored === 'EUR' || stored === 'USD') currency = stored as Currency;
+}
 ---
+<MainLayout>
+	<CurrencyDashboard client:only="react" initialCurrency={currency} />
+</MainLayout>
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>

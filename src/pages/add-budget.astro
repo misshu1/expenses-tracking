@@ -1,0 +1,8 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import BudgetPlanner from '../components/BudgetPlanner/BudgetPlanner';
+---
+<MainLayout>
+  <h2 class="text-xl font-semibold mb-4">Yearly Budget Planner</h2>
+  <BudgetPlanner client:only="react" />
+</MainLayout> 
