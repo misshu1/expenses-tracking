@@ -1,0 +1,15 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import AddTransactionForm from '../components/AddTransactionForm/AddTransactionForm';
+import type { Currency } from '../utils/currencyUtils';
+
+let currency: Currency = 'RON';
+if (Astro.cookies.has('currency')) {
+  const stored = Astro.cookies.get('currency')?.value;
+  if (stored === 'RON' || stored === 'EUR' || stored === 'USD') currency = stored as Currency;
+}
+---
+<MainLayout>
+  <h2 class="text-xl font-semibold mb-4">Add Transaction</h2>
+  <AddTransactionForm client:only="react" currency={currency} />
+</MainLayout> 

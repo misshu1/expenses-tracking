@@ -97,9 +97,40 @@ flowchart TD
    - Dashboard: Overview of expenses, budgets, investments.
    - Dynamic charts for spending, budget progress, investment growth.
    - Currency switcher (RON/EUR/USD) with live recalculation.
-2. **Add Expense**
-   - Form to add new expenses (amount, category, date, notes).
+2. **Add Transaction**
+   - Form to add new expenses or income (amount, category, subcategory, date, notes).
    - Currency input, auto-converted to selected currency.
+   - **Dynamic Category/Subcategory:**
+     - For **Expense**:
+       - Categories: Invoices, Transportation, Health, Home, Vacations
+       - Subcategories depend on category:
+         - Invoices: Phone, Internet, Electricity
+         - Transportation: Gas, Public Transport, Taxi
+         - Health: Pharmacy, Doctor, Insurance
+         - Home: Maintenance, Furniture, Appliances
+         - Vacations: Flights, Hotels, Tours
+     - For **Income**:
+       - Categories: Salary, Others
+       - If 'Others' is selected: Insurance, Gifts, Returns, Rent
+   - The following mapping is used to populate the subcategory dropdown dynamically:
+
+```js
+// Expense categories and subcategories
+const expenseSubcategories = {
+  Invoices: ['Phone', 'Internet', 'Electricity'],
+  Transportation: ['Gas', 'Public Transport', 'Taxi'],
+  Health: ['Pharmacy', 'Doctor', 'Insurance'],
+  Home: ['Maintenance', 'Furniture', 'Appliances'],
+  Vacations: ['Flights', 'Hotels', 'Tours'],
+};
+
+// Income categories and subcategories
+const incomeSubcategories = {
+  Salary: [],
+  Others: ['Insurance', 'Gifts', 'Returns', 'Rent'],
+};
+```
+
 3. **Add Yearly Budget**
    - Set yearly budget per category.
    - Real-time feedback on budget usage.
