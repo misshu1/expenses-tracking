@@ -10,6 +10,7 @@ import type {FC} from "react";
 import Subcategory from "./Subcategory";
 import type {BudgetPlannerInput} from "./validation-schema";
 import TextField from "@ui/inputs/TextField";
+import DropdownField from "@ui/inputs/DropdownField";
 
 type CategoryProps = {
 	fields: FieldArrayWithId<BudgetPlannerInput>[];
@@ -19,9 +20,19 @@ type CategoryProps = {
 };
 
 const Category: FC<CategoryProps> = ({fields, control, errors, remove}) => {
+	const categoryTypeOptions = [
+		{label: "Income", value: "income"},
+		{label: "Expense", value: "expense"},
+	];
+
 	return (
 		<div className="flex flex-col gap-4">
 			{fields.map((cat, catIdx) => {
+				// Get the current category type to conditionally render fields
+				const currentCategoryType =
+					control._formValues.categories?.[catIdx]?.categoryType;
+				const isIncome = currentCategoryType === "income";
+
 				return (
 					<div
 						key={cat.id}
@@ -31,6 +42,31 @@ const Category: FC<CategoryProps> = ({fields, control, errors, remove}) => {
 							Category
 						</span>
 						<div className="flex flex-col gap-2 w-full">
+							{/* Category Type Dropdown */}
+							<div className="flex-1 min-w-0">
+								<Controller
+									name={
+										`categories.${catIdx}.categoryType` as const
+									}
+									control={control}
+									render={({
+										field: {ref, ...field},
+										fieldState: {invalid, isDirty, error},
+									}) => (
+										<DropdownField
+											{...field}
+											name={`categories.${catIdx}.categoryType`}
+											label="Category Type"
+											options={categoryTypeOptions}
+											isInvalid={invalid}
+											isValid={!invalid && isDirty}
+											error={error?.message}
+											value={field.value ?? ""}
+										/>
+									)}
+								/>
+							</div>
+							{/* Category Name - Always visible */}
 							<div className="flex-1 min-w-0">
 								<Controller
 									name={`categories.${catIdx}.name` as const}
@@ -52,64 +88,71 @@ const Category: FC<CategoryProps> = ({fields, control, errors, remove}) => {
 									)}
 								/>
 							</div>
-							<div className="flex-1 min-w-0">
-								<Controller
-									name={
-										`categories.${catIdx}.budget` as const
-									}
-									control={control}
-									render={({
-										field,
-										fieldState: {invalid, isDirty, error},
-									}) => (
-										<TextField
-											{...field}
-											type="text"
-											label="Annual Budget"
-											isInvalid={invalid}
-											isValid={!invalid && isDirty}
-											error={error?.message}
-											value={
-												field.value !== undefined &&
-												field.value !== null
-													? String(field.value)
-													: ""
+							{/* Budget and Monthly Limit - Only visible for expense categories */}
+							{!isIncome && (
+								<>
+									<div className="flex-1 min-w-0">
+										<Controller
+											name={
+												`categories.${catIdx}.budget` as const
 											}
-											placeholder="Amount"
+											control={control}
+											render={({
+												field,
+												fieldState: {
+													invalid,
+													isDirty,
+													error,
+												},
+											}) => (
+												<TextField
+													{...field}
+													type="number"
+													label="Annual Budget"
+													isInvalid={invalid}
+													isValid={
+														!invalid && isDirty
+													}
+													error={error?.message}
+													value={field.value}
+													placeholder="Amount"
+												/>
+											)}
 										/>
-									)}
-								/>
-							</div>
-							<div className="flex-1 min-w-0">
-								<Controller
-									name={
-										`categories.${catIdx}.monthlyLimit` as const
-									}
-									control={control}
-									render={({
-										field,
-										fieldState: {invalid, isDirty, error},
-									}) => (
-										<TextField
-											{...field}
-											type="text"
-											label="Monthly Limit"
-											isInvalid={invalid}
-											isValid={!invalid && isDirty}
-											error={error?.message}
-											value={
-												field.value !== undefined &&
-												field.value !== null
-													? String(field.value)
-													: ""
+									</div>
+									<div className="flex-1 min-w-0">
+										<Controller
+											name={
+												`categories.${catIdx}.monthlyLimit` as const
 											}
-											placeholder="Amount"
+											control={control}
+											render={({
+												field,
+												fieldState: {
+													invalid,
+													isDirty,
+													error,
+												},
+											}) => (
+												<TextField
+													{...field}
+													type="number"
+													label="Monthly Limit"
+													isInvalid={invalid}
+													isValid={
+														!invalid && isDirty
+													}
+													error={error?.message}
+													value={field.value ?? ""}
+													placeholder="Amount"
+												/>
+											)}
 										/>
-									)}
-								/>
-							</div>
+									</div>
+								</>
+							)}
 						</div>
-						{/* Subcategories */}
+						{/* Subcategories - Always visible for both income and expense categories */}
 						<Subcategory
 							errors={errors}
 							catIdx={catIdx}

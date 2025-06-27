@@ -9,12 +9,12 @@ import {
 	Tooltip,
 	Legend,
 } from "chart.js";
+import type {FC} from "react";
 import {useForm, useFieldArray} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {BudgetPlannerSchema} from "./validation-schema";
 import type {BudgetPlannerInput} from "./validation-schema";
 import Category from "./Category";
-import type {FC} from "react";
 
 ChartJS.register(
 	CategoryScale,
@@ -29,12 +29,14 @@ const defaultValues: BudgetPlannerInput = {
 	categories: [
 		{
 			name: "Housing",
+			categoryType: "expense",
 			budget: 12000,
 			monthlyLimit: 1000,
 			subcategories: [{name: "Rent"}, {name: "Utilities"}],
 		},
 		{
 			name: "Groceries",
+			categoryType: "expense",
 			budget: 6000,
 			monthlyLimit: 500,
 			subcategories: [{name: "Supermarket"}, {name: "Market"}],
@@ -105,6 +107,7 @@ const BudgetPlanner: FC = () => {
 					onClick={() =>
 						append({
 							name: "",
+							categoryType: "expense",
 							budget: undefined,
 							monthlyLimit: undefined,
 							subcategories: [],

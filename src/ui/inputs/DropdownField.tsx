@@ -62,7 +62,7 @@ const DropdownField: FC<DropdownFieldProps> = ({
 						<option
 							key={opt.value}
 							value={opt.value}
-							className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+							className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
 						>
 							{opt.label}
 						</option>
