@@ -1,6 +1,7 @@
 ---
-import ResponsiveNav from "../components/ResponsiveNav/ResponsiveNav";
-import "../styles/tailwind.css";
+import Notifications from "@ui/notifications/Notifications";
+import ResponsiveNav from "@components/ResponsiveNav/ResponsiveNav";
+import "@styles/tailwind.css";
 ---
 
 <html lang="en">
@@ -11,6 +12,7 @@ import "../styles/tailwind.css";
 	</head>
 	<body class="bg-gray-50 dark:bg-gray-950 min-h-screen font-sans">
 		<ResponsiveNav client:only="react" />
+		<Notifications client:load />
 		<main class="size-full mx-auto p-4">
 			<slot />
 		</main>
