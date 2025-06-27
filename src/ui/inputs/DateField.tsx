@@ -1,4 +1,5 @@
-import type {FC, ChangeEvent, JSX} from "react";
+import type {FC, ChangeEvent} from "react";
+import {Icon} from "@iconify/react";
 
 type DateFieldProps = {
 	name: string;
@@ -10,7 +11,6 @@ type DateFieldProps = {
 	isDisabled?: boolean;
 	error?: string;
 	autoComplete?: "on" | "off";
-	children?: JSX.Element;
 };
 
 const DateField: FC<DateFieldProps> = ({
@@ -23,14 +23,14 @@ const DateField: FC<DateFieldProps> = ({
 	isDisabled = false,
 	error,
 	autoComplete = "off",
-	children,
 }) => {
-	const baseContainer =
-		"flex flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-2 transition-shadow border border-gray-200 dark:border-gray-700 rounded-lg";
+	const baseContainer = `flex flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-2 transition-shadow ${!isValid && !isInvalid ? "shadow-shadow-[0_0_5px_0_#9ca3af] dark:shadow-[0_0_5px_0_#6b7280]" : ""} rounded-lg`;
 	const valid = isValid ? "shadow-[0_0_5px_0_#4ade80]" : "";
 	const invalid = isInvalid ? "shadow-[0_0_5px_0_#ef4444]" : "";
 	const focus = "focus-within:shadow-[0_0_5px_0_#38bdf8]";
-	const disabled = isDisabled ? "cursor-not-allowed grayscale" : "";
+	const disabled = isDisabled
+		? "cursor-not-allowed grayscale brightness-60"
+		: "";
 	const containerClassname = `${baseContainer} ${valid} ${invalid} ${focus} ${disabled}`;
 
 	return (
@@ -50,12 +50,12 @@ const DateField: FC<DateFieldProps> = ({
 					onChange={onChange}
 					disabled={isDisabled}
 					autoComplete={autoComplete}
-					className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border-none outline-none h-6 text-slate-100 text-base disabled:cursor-not-allowed disabled:grayscale dark:[color-scheme:dark]"
+					className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border-none outline-none h-6 text-slate-100 text-base disabled:cursor-not-allowed dark:[color-scheme:dark]"
 				/>
 			</div>
 			{error && (
 				<span className="flex items-center gap-2 mt-2 text-red-400 font-bold text-sm min-w-[15px]">
-					{children && <span>{children}</span>}
+					<Icon icon="ri:alert-line" width={20} />
 					<span>{error}</span>
 				</span>
 			)}
